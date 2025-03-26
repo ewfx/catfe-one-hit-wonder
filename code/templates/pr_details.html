@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PR Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<header class="header">
+    <h1>PR #{{ pr['number'] }} Details</h1>
+</header>
+
+<div class="container two-column">
+
+    <!-- Left Column: PR Details -->
+    <div class="left-column">
+        <div class="pr-card">
+            <h2>📄 PR Information</h2>
+            <p><strong>Title:</strong> {{ pr['title'] }}</p>
+            <p><strong>JIRA ID:</strong> {{ jira_id }}</p>
+            <p><strong>Created By:</strong> {{ pr['user']['login'] }}</p>
+            <p><a href="{{ pr['html_url'] }}" target="_blank" style="color: blue; text-decoration: underline;">🔗 View PR on GitHub</a></p>
+        </div>
+
+        <!-- JIRA Details -->
+        <div class="jira-card">
+            <h2>🛠️ JIRA Story Details</h2>
+            <p><strong>Title:</strong> {{ jira_details['title'] }}</p>
+            <p><strong>Description:</strong> {{ jira_details['description'] }}</p>
+            <p><strong>Acceptance Criteria:</strong> {{ jira_details['acceptance_criteria'] }}</p>
+        </div>
+
+        <button id="analyze-btn" data-jira-id="{{ jira_id }}" data-pr-number="{{ pr['number'] }}">🔍 Analyze Story</button>
+        <div id="mistral-results"></div>
+    </div>
+
+    <div class="right-column">
+        <h2>🛠️ Code Changes</h2>
+        <form id="file-selection-form">
+            {% for file in files %}
+            <div class="accordion">
+                <input type="checkbox" id="file-{{ loop.index }}" class="accordion-toggle">
+                <label for="file-{{ loop.index }}" class="accordion-title">
+                    <input type="checkbox" class="file-checkbox" data-filename="{{ file['filename'] }}" data-changes="{{ file['changes'] }}">
+                    📄 {{ file['filename'] }}
+                </label>
+                <div class="accordion-content">
+                    <pre><code>{{ file['changes'] }}</code></pre>
+                </div>
+            </div>
+            {% endfor %}
+        </form>
+        <!-- New Analyze Code Button -->
+        <!-- Add the Generate Tests Button -->
+        <div class="button-group" style="margin-top: 20px;">
+            <button id="analyze-code-btn" data-jira-id="{{ jira_id }}" data-pr-number="{{ pr['number'] }}">🔍 Analyze Code</button>
+            <button id="generate-tests-btn" data-jira-id="{{ jira_id }}" data-pr-number="{{ pr['number'] }}">🧪 Generate Tests</button>
+        </div>
+    </div>
+
+    <div id="analyze-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div id="modal-body">
+                <div class="spinner" id="loading-spinner" style="display: block;">Loading...</div>
+                <div id="modal-results" style="display: none; overflow-y: auto;"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="download-btn" style="display: none;">Download as .txt</button>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<script>
+    $('#analyze-btn').click(function() {
+        const jiraId = $(this).data('jira-id');
+        const pr_number = $(this).data('pr-number');
+        console.log(jiraId, pr_number);
+
+        // Show the modal and spinner
+        $('#analyze-modal').show();
+        $('#loading-spinner').show();
+        $('#modal-results').hide();
+        $('#download-btn').hide();
+
+        $.ajax({
+            url: '/analyze_with_mistral',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ jira_id: jiraId, pr_number: pr_number }),
+            success: function(response) {
+                // Hide the spinner and show the results
+                $('#loading-spinner').hide();
+                const bddCriteria = response.bdd_criteria;
+                $('#modal-results').html(`
+                    <h3>BDD:</h3><pre>${bddCriteria}</pre>
+                `).show();
+
+                // Show the download button
+                $('#download-btn').show();
+
+                // Attach click event to download button
+                $('#download-btn').off('click').on('click', function() {
+                    const blob = new Blob([bddCriteria], { type: 'text/plain' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'bdd_criteria.txt';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                $('#loading-spinner').hide();
+                $('#modal-results').html(`<p style="color: red;">Error: ${xhr.responseText}</p>`).show();
+            }
+        });
+    });
+
+    // Close the modal when the close button is clicked
+    $('.close-btn').click(function() {
+        $('#analyze-modal').hide();
+    });
+
+    // Close the modal when clicking outside the modal content
+    $(window).click(function(event) {
+        if ($(event.target).is('#analyze-modal')) {
+            $('#analyze-modal').hide();
+        }
+    });
+//----------------------------------------------//
+$('#analyze-code-btn').click(function () {
+    // Show the modal and spinner
+    $('#analyze-modal').show();
+    $('#loading-spinner').show();
+    $('#modal-results').hide();
+    $('#download-btn').hide();
+    const pr_number = $(this).data('pr-number');
+    const jiraId = $(this).data('jira-id');
+    console.log(pr_number);
+
+    // Collect selected files
+    const selectedFiles = [];
+    $('.file-checkbox:checked').each(function () {
+        const filename = $(this).data('filename');
+        const changes = $(this).data('changes');
+        selectedFiles.push({ filename, changes });
+    });
+
+    if (selectedFiles.length === 0) {
+        $('#loading-spinner').hide();
+        $('#modal-results').html('<p style="color: red;">No files selected for analysis.</p>').show();
+        return;
+    }
+
+    const owner = '{{ owner }}';
+    const repo = '{{ repo }}';
+
+    // Send the selected files to the backend
+    $.ajax({
+        url: '/analyze_code',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ files: selectedFiles, owner, repo, jira_id: jiraId, pr_number: pr_number }),
+        success: function (response) {
+            // Hide the spinner and show the results
+            $('#loading-spinner').hide();
+
+            // Generate the analysis results
+            let resultsHtml = '<h3>Code Analysis Results:</h3>';
+            response.results.forEach(result => {
+                resultsHtml += `
+                    <h4>${result.filename}</h4>
+                    <pre>${result.analysis}</pre>
+                `;
+            });
+
+            $('#modal-results').html(resultsHtml).show();
+
+            // Show the download button
+            $('#download-btn').show();
+
+            // Attach click event to download button
+            $('#download-btn').off('click').on('click', function () {
+                const blob = new Blob([resultsHtml], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'code_analysis.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error('Error:', error);
+            $('#loading-spinner').hide();
+            $('#modal-results').html(`<p style="color: red;">Error: ${xhr.responseText}</p>`).show();
+        }
+    });
+});
+//--------------------------------------//
+$('#generate-tests-btn').click(function () {
+    // Show the modal and spinner
+    $('#analyze-modal').show();
+    $('#loading-spinner').show();
+    $('#modal-results').hide();
+    $('#download-btn').hide();
+    const pr_number = $(this).data('pr-number');
+    const jiraId = $(this).data('jira-id');
+
+    // Collect selected files
+    const selectedFiles = [];
+    $('.file-checkbox:checked').each(function () {
+        const filename = $(this).data('filename');
+        const changes = $(this).data('changes');
+        selectedFiles.push({ filename, changes });
+    });
+
+    if (selectedFiles.length === 0) {
+        $('#loading-spinner').hide();
+        $('#modal-results').html('<p style="color: red;">No files selected for test generation.</p>').show();
+        return;
+    }
+
+    const owner = '{{ owner }}';
+    const repo = '{{ repo }}';
+
+    // Send the selected files to the backend
+    $.ajax({
+        url: '/generate_tests', // New backend route for generating tests
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ files: selectedFiles, owner, repo, jira_id: jiraId, pr_number: pr_number }),
+        success: function (response) {
+            // Hide the spinner and show the results
+            $('#loading-spinner').hide();
+
+            // Generate the test results
+            let resultsHtml = '<h3>Generated Tests:</h3>';
+            response.results.forEach(result => {
+                resultsHtml += `
+                    <h4>${result.filename}</h4>
+                    <pre>${result.tests}</pre>
+                `;
+            });
+
+            $('#modal-results').html(resultsHtml).show();
+
+            // Show the download button
+            $('#download-btn').show();
+
+            // Attach click event to download button
+            $('#download-btn').off('click').on('click', function () {
+                const blob = new Blob([resultsHtml], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'generated_tests.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error('Error:', error);
+            $('#loading-spinner').hide();
+            $('#modal-results').html(`<p style="color: red;">Error: ${xhr.responseText}</p>`).show();
+        }
+    });
+});
+</script>
+
+</body>
+</html>

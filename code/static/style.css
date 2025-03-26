@@ -1,0 +1,423 @@
+/* General Styling */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #eeecec; /* Light gray background */
+    color: #2d2d2d; /* Dark gray text */
+    line-height: 1.6;
+    padding: 40px;
+}
+
+.header {
+    text-align: center;
+    padding: 15px;
+    background: #513c62; /* Soft Purple */
+    color: white;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1.4;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Form Styling */
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.search-bar {
+    flex: 1;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 1px solid #cbd5e0; /* Light gray border */
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.search-bar:focus {
+    border-color: #4a90e2; /* Blue border on focus */
+}
+
+.search-button {
+    background-color: #513c62; /* Soft blue */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+    background-color: #000000; /* Darker blue on hover */
+}
+
+.pr-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pr-card:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Stronger shadow on hover */
+}
+
+.pr-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.pr-header h3 {
+    font-size: 18px;
+    color: #2d2d2d; /* Dark gray */
+    margin: 0;
+}
+
+.pr-header span {
+    font-size: 14px;
+    color: #513c62; /* Soft Purple */
+}
+
+.pr-card p {
+    font-size: 14px;
+    color: #4a5568; /* Medium gray */
+    margin: 5px 0;
+}
+
+.github-link {
+    display: inline-block;
+    margin-top: 10px;
+    color: #4a90e2; /* Soft blue */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.github-link:hover {
+    color: #357ab8; /* Darker blue on hover */
+}
+
+/* Back to Top Button */
+.back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #4a90e2; /* Soft blue */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.back-to-top:hover {
+    background-color: #357ab8; /* Darker blue on hover */
+    transform: translateY(-5px); /* Slight lift on hover */
+}
+/* Two-Column Layout */
+.container.two-column {
+    display: flex;
+    gap: 20px; /* Space between the columns */
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Left Column */
+.left-column {
+    flex: 1; /* Take up 40% of the container */
+    min-width: 300px;
+    max-width: 40%;
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+}
+
+/* Right Column */
+.right-column {
+    flex: 2; /* Take up 60% of the container */
+    min-width: 300px;
+    max-width: 60%;
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+    overflow-y: auto;
+    max-height: 80vh; /* Prevent the right column from growing too tall */
+}
+
+/* Left Column */
+.left-column {
+    flex: 1;
+    min-width: 300px;
+    max-width: 40%;
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+/* JIRA ID Styling */
+.left-column p strong {
+    color: #513c62;
+}
+
+/* Right Column */
+.right-column {
+    flex: 2;
+    min-width: 300px;
+    max-width: 60%;
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    overflow-y: auto;
+    max-height: 80vh;
+}
+
+/* Accordion Styling */
+.accordion {
+    background: #f1f1f1;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+.accordion-content {
+    display: none;
+    padding: 20px;
+    background: #fff;
+    border-radius: 0 0 8px 8px;
+}
+
+.accordion-toggle:checked + .accordion-title + .accordion-content {
+    display: block;
+}
+
+/* Modal Styling */
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    width: 50%;
+    max-width: 800px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    max-height: 80vh;
+    overflow: hidden;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 10px;
+}
+
+#modal-body {
+    flex: 1; /* Take up 95% of the modal height */
+    padding: 20px;
+    overflow-y: auto; /* Enable scrolling for content */
+}
+
+.modal-footer {
+    height: 5%; /* Fixed height for the footer */
+    padding: 10px;
+    background-color: #f1f1f1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid #ddd;
+}
+
+/* Buttons */
+button {
+    background-color: #6c63ff; /* Soft Purple */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 20px; /* Padding for size */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+button:hover {
+    background-color: #574bff; /* Slightly darker purple on hover */
+}
+
+/* Analyze Buttons Specific Styling */
+#analyze-btn, #analyze-code-btn, #generate-tests-btn {
+    margin-top: 15px; /* Add spacing above the buttons */
+    display: inline-block; /* Ensure buttons are inline */
+    text-align: center; /* Center text */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.spinner {
+    font-size: 18px;
+}
+
+/* Accordion Styling */
+.accordion {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.accordion-toggle {
+    display: none;
+}
+
+.accordion-title {
+    display: block;
+    background: #f1f1f1;
+    padding: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+}
+
+.accordion-title:hover {
+    background: #e9e9e9;
+}
+
+.accordion-content {
+    display: none;
+    padding: 15px;
+    background: #fff;
+    white-space: pre-wrap; /* Preserve line breaks and wrap text */
+    overflow-wrap: break-word; /* Break long words */
+}
+
+.accordion-toggle:checked + .accordion-title + .accordion-content {
+    display: block;
+}
+
+/* General Button Styling */
+button {
+    background-color: #513c62; /* Blue background */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 20px; /* Padding for size */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+/* Hover Effect for Buttons */
+button:hover {
+    background-color: #000000; /* Darker blue on hover */
+}
+
+/* Analyze Buttons Specific Styling */
+#analyze-btn, #analyze-code-btn {
+    margin-top: 15px; /* Add spacing above the buttons */
+    display: inline-block; /* Ensure buttons are inline */
+    text-align: center; /* Center text */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+/* Disabled Button Styling */
+button:disabled {
+    background-color: #cccccc; /* Gray background for disabled state */
+    cursor: not-allowed; /* Show not-allowed cursor */
+}
+
+a {
+    color: #ff6584; /* Soft Pink */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #e94e6f; /* Darker pink on hover */
+}
+
+/* Modal */
+.modal-content {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+#modal-results pre {
+    padding: 10px;
+    background-color: #f4f4f9; /* Light gray background */
+    border-radius: 5px;
+    color: #2d2d2d; /* Dark gray text */
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* Success Messages */
+.success-message {
+    background-color: #4caf50; /* Green */
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: center;
+}

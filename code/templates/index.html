@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tests At Your Tip</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="header">
+    <h1>Tests At Your Tip</h1>
+</header>
+
+<div class="container">
+    <!-- Stylish Search Bar -->
+    <form action="/" method="POST" class="form-container">
+        <input type="text" name="repo_url" placeholder="Paste GitHub Repo URL..." required class="search-bar">
+        <button type="submit" class="search-button">🔎 Fetch PRs</button>
+    </form>
+
+    {% if prs %}
+    <h2>🔎 Open PRs in <strong>{{ owner }}/{{ repo }}</strong></h2>
+
+    {% for pr in prs %}
+    <div class="pr-card">
+        <div class="pr-header">
+            <h3>{{ pr['title'] }}</h3>
+            <span>👤 {{ pr['user'] }}</span>
+        </div>
+        <p>📅 Created: {{ pr['created_at'] }}</p>
+        <a href="{{ url_for('pr_details', pr_number=pr['number'], owner=owner, repo=repo) }}" class="github-link">🔗 View Details</a>
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
+
+<!-- Back to Top Button -->
+<button id="back-to-top" class="back-to-top">↑</button>
+
+<script>
+    // Smooth scroll to top functionality
+    const backToTop = document.getElementById('back-to-top');
+    window.onscroll = () => {
+        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+            backToTop.style.display = "flex";
+        } else {
+            backToTop.style.display = "none";
+        }
+    };
+
+    backToTop.onclick = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+</script>
+
+</body>
+</html>
