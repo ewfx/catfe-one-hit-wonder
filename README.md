@@ -28,7 +28,11 @@ This project aims to solve this problem by building a GenAI-backed PR analysis a
 📹 [Video Demo](https://drive.google.com/file/d/1v4ZgW-nrvoXPgG_tMOPmLcJBRQKe7RxR/view?usp=sharing) (Added drive link but available in the artifacts/demo folder as well)  
 🖼️ Screenshots:
 
-![Screenshot 1](link-to-image)
+![Screenshot 1](https://github.com/ewfx/catfe-one-hit-wonder/blob/main/artifacts/demo/Screenshot%20(47).png)
+![Screenshot 2](https://github.com/ewfx/catfe-one-hit-wonder/blob/main/artifacts/demo/Screenshot%20(48).png)
+![Screenshot 3](https://github.com/ewfx/catfe-one-hit-wonder/blob/main/artifacts/demo/Screenshot%20(49).png)
+![Screenshot 4](https://github.com/ewfx/catfe-one-hit-wonder/blob/main/artifacts/demo/Screenshot%20(50).png)
+![Screenshot 5](https://github.com/ewfx/catfe-one-hit-wonder/blob/main/artifacts/demo/Screenshot%20(51).png)
 
 ## 💡 Inspiration
 The project was inspired by the need to streamline code review and testing processes in banking applications, where ensuring regulatory compliance and maintaining code quality is critical. By automating PR analysis and test generation, it reduces manual effort and enhances accuracy.
