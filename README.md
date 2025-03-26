@@ -2,7 +2,7 @@
 
 ## 📌 Table of Contents
 - [Introduction](#introduction)
-- [Demo](#demo)
+- [Demo Drive Link](https://drive.google.com/file/d/1v4ZgW-nrvoXPgG_tMOPmLcJBRQKe7RxR/view?usp=sharing)
 - [Inspiration](#inspiration)
 - [What It Does](#what-it-does)
 - [How We Built It](#how-we-built-it)
@@ -14,46 +14,52 @@
 ---
 
 ## 🎯 Introduction
-A brief overview of your project and its purpose. Mention which problem statement are your attempting to solve. Keep it concise and engaging.
+Modern software development teams face challenges in maintaining code quality, ensuring test coverage, and accelerating code review processes. Manual testing and review cycles are time-consuming and prone to human errors, especially in banking applications where regulatory compliance is critical.
+
+This project aims to solve this problem by building a GenAI-backed PR analysis and test generation system that:
+
+- Automates PR code review by analyzing changes and identifying their impact.
+
+- Generates context-aware BDD test cases using a RAG-enhanced architecture that integrates JIRA story details with code analysis.
+
+- Improves efficiency and accuracy in testing by leveraging fine-tuned Mistral models for banking-specific insights.
 
 ## 🎥 Demo
-🔗 [Live Demo](#) (if applicable)  
-📹 [Video Demo](#) (if applicable)  
+📹 [Video Demo](https://drive.google.com/file/d/1v4ZgW-nrvoXPgG_tMOPmLcJBRQKe7RxR/view?usp=sharing) (Added drive link but available in the artifacts/demo folder as well)  
 🖼️ Screenshots:
 
 ![Screenshot 1](link-to-image)
 
 ## 💡 Inspiration
-What inspired you to create this project? Describe the problem you're solving.
+The project was inspired by the need to streamline code review and testing processes in banking applications, where ensuring regulatory compliance and maintaining code quality is critical. By automating PR analysis and test generation, it reduces manual effort and enhances accuracy.
 
 ## ⚙️ What It Does
-Explain the key features and functionalities of your project.
+The GenAI-Powered PR Analysis and Test Generation System automates code review and test creation by extracting PR details, analyzing JIRA stories with a fine-tuned Mistral model, and generating context-aware BDD test cases. It uses a RAG-enhanced architecture to include story context during code and test analysis, ensuring accuracy and compliance in banking applications.
 
 ## 🛠️ How We Built It
-Briefly outline the technologies, frameworks, and tools used in development.
+The project uses Flask for the backend and web UI, with SQLite for storing analysis results. It integrates with the GitHub API for fetching PR details and code changes, and uses Mistral AI APIs for story analysis, code review, and test generation. The frontend is styled with HTML, CSS, and JavaScript for a clean and intuitive user experience.
 
 ## 🚧 Challenges We Faced
-Describe the major technical or non-technical challenges your team encountered.
+One major challenge was maintaining context consistency during code analysis and test generation. To overcome this, we implemented a RAG-enhanced architecture, storing story analysis results in SQLite and feeding them back into the Mistral model for contextual accuracy.
 
 ## 🏃 How to Run
 1. Clone the repository  
    ```sh
-   git clone https://github.com/your-repo.git
+   git clone https://github.com/ewfx/catfe-one-hit-wonder.git
    ```
 2. Install dependencies  
    ```sh
-   npm install  # or pip install -r requirements.txt (for Python)
+   pip install -r requirements.txt
    ```
 3. Run the project  
    ```sh
-   npm start  # or python app.py
+   python app.py
    ```
 
 ## 🏗️ Tech Stack
-- 🔹 Frontend: React / Vue / Angular
-- 🔹 Backend: Node.js / FastAPI / Django
-- 🔹 Database: PostgreSQL / Firebase
-- 🔹 Other: OpenAI API / Twilio / Stripe
+- 🔹 Web APP: Flask
+- 🔹 Database: SQLite
+- 🔹 Other: Mistral AI
 
 ## 👥 Team
-- **Your Name** - [GitHub](#) | [LinkedIn](#)
+- **Hariom Vyas** - [GitHub](https://github.com/hariom0159) | [LinkedIn](linkedin.com/in/hariom1509/)
